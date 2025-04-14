@@ -7,7 +7,7 @@ import pymongo
 import dns.resolver
 
 app = Flask(__name__)
-app.secret_key = "xhack_secret_key"
+app.secret_key = "JGHdufgewfiuASIUDIUU9831984942hyiufguwi&&&d"
 bcrypt = Bcrypt(app)
 
 client = pymongo.MongoClient(
@@ -47,43 +47,6 @@ def login():
             return redirect(url_for('login'))
 
     return render_template('login.html') 
-
-
-# @app.route('/sign-up', methods=["GET", "POST"])
-# def sign():
-#     if request.method == "POST":
-#         email = request.form['email']
-#         password1 = request.form['password1']
-#         password2 = request.form['password2']
-
-#         if not EMAIL_REGEX.match(email):
-#             flash("Invalid email format!", "danger")
-#             return redirect(url_for('sign'))
-
-#         if not check_mx_record(email):
-#             flash("Invalid email domain or unable to verify the domain!", "danger")
-#             return redirect(url_for('sign'))
-
-#         if password1 != password2:
-#             flash("Passwords do not match!", "danger")
-#             return redirect(url_for('sign'))
-
-#         if not PASSWORD_REGEX.match(password1):
-#             flash("Password must be at least 8 characters long with uppercase, lowercase, a number, and a special character!", "danger")
-#             return redirect(url_for('sign'))
-
-#         existing_user = users_collection.find_one({"email": email})
-#         if existing_user:
-#             flash("Email already registered. Try logging in.", "danger")
-#             return redirect(url_for('sign'))
-
-#         hashed_password = bcrypt.generate_password_hash(password1).decode('utf-8')
-#         users_collection.insert_one({"email": email, "password": hashed_password})
-#         flash("Account created successfully. Please log in!", "success")
-#         return redirect(url_for('login'))
-
-#     return render_template('sign-up.html')
-
 
 @app.route('/sign-up', methods=["GET", "POST"])
 def sign():
