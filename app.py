@@ -146,7 +146,7 @@ def upload_image():
         return redirect(url_for('closet'))
 
     email = session.get('email')
-    image_data = Binary(image_file.read())  # Save binary image data
+    image_data = Binary(image_file.read())  
 
     closets_collection.insert_one({
         'email': email,
