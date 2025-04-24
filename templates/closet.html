@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&family=Inconsolata:wght@200..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lora:ital,wght@0,400..700;1,400..700&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&family=Roboto+Slab:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&family=Space+Grotesk:wght@300..700&family=Zilla+Slab:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>My Closet | StyleSync</title>
+</head>
+<style>
+    body {
+        background-color: white;
+        color: black;
+        animation: fadeIn 2s ease-out forwards;
+    }
+    @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    .hero {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .hero h1 {
+        font-weight: bolder;
+        font-size: 80px;
+        margin-right: 20px; /* Space between text and animation */
+        background: linear-gradient(45deg, black, white, black, white);
+        background-size: 400% 400%;
+        -webkit-background-clip: text;
+        color: transparent;
+        animation: gradient-animation 5s ease infinite;
+    }
+    @keyframes gradient-animation {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+    .hero .dotlottie-container {
+        width: 200px;
+        height: 200px;
+    }
+    .hero-animate{
+        text-align: center;
+    }
+    .btn-dark {
+            width:160px;
+            height:50px;
+            position: relative;
+            display: block;
+            margin: auto;
+            padding-right: 25px;
+        }
+
+
+    .btn-dark:hover svg {
+            opacity: 1;
+            right: 5px;
+        }
+    @media (max-width: 768px) {
+        .hero h1 {
+            font-size: 50px;
+        }
+        .hero .dotlottie-container{
+            width:100px;
+            height: 100px;
+        }
+        .collection{
+            margin-left:30px;
+        }
+    }
+</style>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">StyleSync</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a class="nav-link" href="/dashboard">Home</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/my-closet">My Closet</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/disease-detection">Virtual Assistant</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/ai-trend-advisor">AI Trend Advisor</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/user-account"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+                        <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+                    </svg></a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div class="hero">
+        <h1>My Closet</h1>
+        <dotlottie-player src="https://lottie.host/d2e6f949-707d-4535-b5f6-9eef9ba6ab5f/t7LOslSIUh.lottie"
+            background="transparent" speed="1" loop autoplay class="dotlottie-container"></dotlottie-player>
+        
+    </div>
+    <br>
+    <p style="color:#848D93;" class="hero-animate">Upload photos of your outfits here - it's secure 🔐</p>
+    <br>
+    <form id="uploadForm" action="/upload-image" method="POST" enctype="multipart/form-data" style="margin-left:20px;">
+        <input type="file" name="image" id="imageInput" accept="image/*" required style="display: none;" onchange="document.getElementById('uploadForm').submit();">
+        
+        <button type="button" class="btn btn-dark hero-animate" onclick="document.getElementById('imageInput').click()">
+          Upload
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-upload" viewBox="0 0 16 16">
+            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+            <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
+          </svg>
+        </button>
+      </form>
+      
+    
+<br><br>
+      <h1 style="width:45%;height:1.5px;color:black;background-color:black; display:block;margin:auto;"></h1>
+    <br>
+    <br>
+    <h1 style="font-weight: bolder; font-family: 'Inter',sans-serif; margin-left: 20px;">My Collection 👇</h1>
+    <br>
+    <div class="collection">
+        {% for image in images %}
+            <img src="data:image/jpeg;base64,{{ image }}" style="max-width: 200px; margin: 10px; border-radius: 10px;">
+        {% endfor %}
+    </div>
+    
+    <script src="https://unpkg.com/@dotlottie/player-component@2.7.12/dist/dotlottie-player.mjs" type="module"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+</body>
+</html>
