@@ -4,9 +4,323 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | XHACK</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://sets.hugeicons.com/YOUR-SET-ID.css" crossorigin="anonymous">
+    <title>Dashboard | StyleSync</title>
+    <style>
+        body {
+            background-color: white;
+            color: black;
+            margin: 0;
+        }
+        
+        .hero{
+            display: block;
+            margin:auto;
+            text-align:center;
+        }
+
+        .hero h1{
+            font-weight:bolder;
+            font-size:100px;
+            cursor: pointer;
+            background: url("{{ url_for('static', filename='images/light.gif') }}");
+            background-size: cover;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent; 
+            animation: starsMove 25s linear infinite;
+        }
+
+        .hero h1 {
+            font-weight: bolder;
+            font-size: 100px;
+            cursor: pointer;
+            background: url("{{ url_for('static', filename='images/light.gif') }}");
+            background-size: cover;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: starsMove 7s linear infinite;
+        }
+
+        .start{
+            text-decoration: none;
+            background-color:black;
+            color:white;
+            border: none;
+            border-radius:6px;
+            padding:5px;
+            height:50px;
+            width: 200px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 60px;
+            }
+            .weather-card{
+                top:50px;
+            }
+        }
+
+        .weather-card {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #FD7F20; 
+            border-radius: 26px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            width: 240px;
+
+            padding: 10px;
+            text-align: center;
+            z-index: 9999;
+            cursor: pointer;
+            transition: background 0.5s ease;
+        }
+
+        .weather-details p {
+            margin: 5px 0;
+            font-weight: 500;
+        }
+
+        .btn-dark {
+            width:160px;
+            height:50px;
+            position: relative;
+            padding-right: 25px;
+        }
+
+        .btn-dark svg {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .btn-dark:hover svg {
+            opacity: 1;
+            right: 5px;
+        }
+
+        #high{
+            background-color: #9ACD32;
+            padding:5px;
+            width:fit-content;
+            height: fit-content;
+            border-radius: 5px;
+            cursor: pointer;
+
+        }
+
+        .pop-in {
+            opacity: 0;
+            transform: scale(0.95) translateY(20px);
+            animation: fadePopIn 0.6s ease-out forwards;
+        }
+
+        @keyframes fadePopIn {
+            to {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 60px;
+            }
+            .weather-card{
+                top:70px;
+            }
+        }
+
+    </style>
 </head>
 <body>
-    Hi
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">StyleSync</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link active" href="/dashboard">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="/my-closet">My Closet</a></li>
+          <li class="nav-item"><a class="nav-link" href="/disease-detection">Virtual Assistant</a></li>
+          <li class="nav-item"><a class="nav-link" href="/ai-trend-advisor">AI Trend Adivsor</a></li>
+          <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
+          <li class="nav-item"><a class="nav-link" href="/user-account"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person" viewBox="0 0 16 16">
+            <path d="M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0m4 8c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4m-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10s-3.516.68-4.168 1.332c-.678.678-.83 1.418-.832 1.664z"/>
+          </svg></a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+<br><br><br><br>
+<div class="weather-card">
+    <div class="weather-icon">
+    </div>
+    <div class="weather-details">
+      <p id="weather-temp">🌥️ 24°C Sunny</p>
+    </div>
+  </div>
+  
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+  <div class="hero hero-animate">
+    <h1>Dress to Dazzle.<br>Shop Smarter.</h1>
+    <br>
+    <p style="color:#848D93;" class="hero-animate">Your AI-Powered Fashion Companion – Organize, Personalize, and Dazzle Daily.</p>
+    <p style="color:#848D93;" class="hero-animate" id="clothing-suggestion"></p>
+    <br>
+    <br>
+    <a href="/my-closet" style="text-decoration:none;"><button class="btn btn-dark hero-animate">Get Started <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+      </svg></button></a>
+  </div>
+  <br>
+  <br>
+  <br>
+  <script>
+    function typeWriterHTML(htmlString, elementId, speed = 40) {
+      const element = document.getElementById(elementId);
+      element.innerHTML = ""; // Clear content
+  
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(htmlString, 'text/html');
+      const nodes = Array.from(doc.body.childNodes);
+  
+      let index = 0;
+  
+      function typeNode(nodeList, parent) {
+        if (index >= nodeList.length) return;
+  
+        const node = nodeList[index];
+        index++;
+  
+        if (node.nodeType === Node.TEXT_NODE) {
+          let text = node.textContent;
+          let charIndex = 0;
+  
+          function typeChar() {
+            if (charIndex < text.length) {
+              parent.append(text.charAt(charIndex));
+              charIndex++;
+              setTimeout(typeChar, speed);
+            } else {
+              typeNode(nodeList, parent);
+            }
+          }
+  
+          typeChar();
+        } else if (node.nodeType === Node.ELEMENT_NODE) {
+          const el = document.createElement(node.nodeName);
+          Array.from(node.attributes).forEach(attr => el.setAttribute(attr.name, attr.value));
+          parent.appendChild(el);
+          const children = Array.from(node.childNodes);
+          let childIndex = 0;
+          const saveIndex = index;
+          index = 0;
+  
+          function typeChildren() {
+            if (index >= children.length) {
+              index = saveIndex;
+              typeNode(nodeList, parent);
+            } else {
+              typeNode(children, el);
+            }
+          }
+  
+          typeChildren();
+        } else {
+          typeNode(nodeList, parent);
+        }
+      }
+  
+      typeNode(nodes, element);
+    }
+  
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        const apiKey = "0ea751ed0c33a5f59db8c07f4a135fe0";
+  
+        fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`)
+          .then(response => {
+            if (!response.ok) throw new Error(`Weather API error: ${response.status}`);
+            return response.json();
+          })
+          .then(data => {
+            const temp = Math.round(data.main.temp);
+            const condition = data.weather[0].main;
+  
+            const emojiMap = {
+              Clear: "☀️",
+              Clouds: "☁️",
+              Rain: "🌧️",
+              Drizzle: "🌦️",
+              Thunderstorm: "⛈️",
+              Snow: "❄️",
+              Mist: "🌫️"
+            };
+  
+            const emoji = emojiMap[condition] || "🌡️";
+            document.getElementById('weather-temp').innerText = `${emoji} ${temp}°C ${condition}`;
+  
+            let suggestion = "something comfy";
+            if (["Rain", "Drizzle", "Thunderstorm"].includes(condition)) {
+              suggestion = "a <span id='high'>raincoat or waterproof jacket</span>";
+            } else if (condition === "Snow") {
+              suggestion = "a <span id='high'>heavy coat and gloves</span>";
+            } else if (temp >= 30) {
+              suggestion = "a <span id='high'>breathable t-shirt and shorts</span>";
+            } else if (temp >= 20) {
+              suggestion = "a <span id='high'>light t-shirt or casual shirt</span>";
+            } else if (temp >= 12) {
+              suggestion = "a <span id='high'>hoodie or light jacket</span>";
+            } else if (temp >= 5) {
+              suggestion = "a <span id='high'>sweater and jeans</span>";
+            } else {
+              suggestion = "a <span id='high'>warm coat, scarf, and boots</span>";
+            }
+  
+            const message = `Pro Tip: Today, try wearing ${suggestion}.`;
+            typeWriterHTML(message, "clothing-suggestion");
+          })
+          .catch(error => {
+            console.error(error);
+            typeWriterHTML("❌ Can't suggest an outfit right now.", "clothing-suggestion");
+          });
+      },
+      (error) => {
+        console.error("Geolocation error:", error.message);
+        typeWriterHTML("📍 Please enable location for suggestions.", "clothing-suggestion");
+      }
+    );
+    function animateHeroSection() {
+  const elements = document.querySelectorAll('.hero-animate');
+  elements.forEach((el, index) => {
+    el.classList.add('pop-in');
+    el.style.animationDelay = `${index * 0.3}s`;
+  });
+}
+
+animateHeroSection()
+  </script>
+  
+  
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
 </body>
 </html>
