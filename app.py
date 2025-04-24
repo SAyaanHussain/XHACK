@@ -8,7 +8,16 @@ from flask_bcrypt import Bcrypt
 import certifi
 import pymongo
 import dns.resolver
-import json  # Import the json module for debugging
+import json  
+
+from flask import Flask, render_template, request, session, redirect, url_for, flash, jsonify
+import os
+import openai
+from pymongo import MongoClient
+from bson import Binary
+from functools import wraps
+import base64
+import json
 
 app = Flask(__name__)
 app.secret_key = "JGHdufgewfiuASIUDIUU9831984942hyiufguwi&&&d"
@@ -134,7 +143,7 @@ def upload_image():
     email = session.get('email')
     image_data = Binary(image_file.read())
     filename = image_file.filename
-    description = request.form.get('description', '')  # Get the description from the form
+    description = request.form.get('description', '')  
     closets_collection.insert_one({
         'email': email,
         'image': image_data,
@@ -183,7 +192,6 @@ def filter_outfits():
             print(f"Error: User not found for email: {email}")
             return {"error": "User not found"}, 404
 
-        # Retrieve user's closet image metadata (filename and description)
         user_images_metadata = closets_collection.find({'email': email}, {'_id': 0, 'filename': 1, 'description': 1})
 
         image_descriptions = [f"Filename: {img.get('filename', 'unknown')}, Description: {img.get('description', 'No description')}" for img in user_images_metadata]
@@ -235,6 +243,88 @@ def filter_outfits():
         print(f"Error in filter_outfits: {error_message}")
         return {"error": str(e)}, 500
 
+
+@app.route('/virtual-assistant')
+@login_required
+def mixmatch():
+    return render_template('mixmatch.html')
+
+
+@app.route('/ask-ai-outfit', methods=['POST'])
+@login_required
+def ask_ai_outfit():
+    prompt_text = request.form.get('prompt')
+    image_files = request.files.getlist('images')
+    history_json = request.form.get('history')
+    email = session.get('email')
+    user = users_collection.find_one({'email': email})
+
+    conversation_history = []
+    if history_json:
+        conversation_history = json.loads(history_json)
+
+    if not prompt_text and not image_files and not conversation_history:
+        return jsonify({'error': 'Please provide text or images to start a conversation.'}), 400
+
+    messages = []
+    for item in conversation_history:
+        if item['role'] == 'user':
+            content = []
+            content.append({"type": "text", "text": item['content']})
+            if item.get('images') == 'uploaded':
+                # We don't have the actual images in the history,
+                # so we can't re-send them. The AI will only have the text.
+                pass
+            messages.append({"role": "user", "content": content})
+        elif item['role'] == 'assistant':
+            messages.append({"role": "assistant", "content": [{"type": "text", "text": item['content']}]})
+
+    # Add the current user's input
+    current_user_content = []
+    instruction = "You are a helpful virtual assistant and your name is StyleSync AI that can analyze images of clothing and provide outfit suggestions based on the conversation history and the latest input."
+    if prompt_text:
+        current_user_content.append({"type": "text", "text": f"{instruction} User's latest request: {prompt_text}"})
+    else:
+        current_user_content.append({"type": "text", "text": instruction})
+
+    for img_file in image_files:
+        try:
+            img_base64 = base64.b64encode(img_file.read()).decode('utf-8')
+            current_user_content.append({
+                "type": "image_url",
+                "image_url": {"url": f"data:image/{img_file.content_type.split('/')[-1]};base64,{img_base64}"}
+            })
+        except Exception as e:
+            print(f"Error encoding image: {e}")
+            return jsonify({'error': 'Failed to process one or more images.'}), 400
+
+    messages.append({"role": "user", "content": current_user_content})
+
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-4-turbo-2024-04-09",
+            messages=messages,
+            max_tokens=700,
+        )
+        suggestion = response['choices'][0]['message']['content']
+
+        formatted_suggestion = ""
+        for paragraph in suggestion.split('\n'):
+            formatted_paragraph = ""
+            for word in paragraph.split():
+                if word.startswith("*") and word.endswith("*"):
+                    formatted_paragraph += f" <strong>{word.strip('*')}</strong>"
+                else:
+                    formatted_paragraph += f" {word}"
+            formatted_suggestion += f"<p>{formatted_paragraph.strip()}</p>"
+
+        return jsonify({'suggestion': formatted_suggestion})
+    except openai.error.OpenAIError as e:
+        print(f"OpenAI API error: {e}")
+        return jsonify({'error': f'Error communicating with OpenAI: {e}'}), 500
+    except Exception as e:
+        print(f"Unexpected error: {e}")
+        return jsonify({'error': 'An unexpected error occurred.'}), 500
 
 if __name__ == "__main__":
     app.run(debug=True, port=8862)
